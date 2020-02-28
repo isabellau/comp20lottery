@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Lottery</title>
+  </head>
+
+  <body>
+    <h1>Lottery</h1>
+
+    <div>
+      <h2>Winning Numbers (Unsorted)</h2>
+      <div id="unsorted">&nbsp;</div>
+    </div>
+
+    <div>
+      <h2>Winning Numbers (Sorted)</h2>
+      <div id="sorted">&nbsp;</div>
+    </div>
+
+    <div>
+      <h2>Lucky Number</h2>
+      <div id="luckynum">&nbsp;</div>
+    </div>
+
+    <h2>Submit Your Lottery Numbers</h2>
+    <form action="/action_page.php" method="get">
+      <label for="numbers"> Input Your Numbers Separated by Spaces:</label>
+      <input type="text" id="numbers" name="numbers" /><br /><br />
+      <label for="luckyb"> LuckyBall Number:</label>
+      <input type="text" id="luckyb" name="luckyb" /><br /><br />
+      <input
+        type="button"
+        value="Submit"
+        value="Submit"
+        onclick="processInput()"
+      />
+    </form>
+
+    <div id="PayoutDiv" style="display:none;">
+      Hi
+    </div>
+
+    <script language="Javascript">
+      var nums = new Array();
+
+      for (i = 0; i < 5; i++) {
+        var randnum = Math.floor(Math.random() * 48 + 1);
+
+        while (nums.includes(randnum, 0)) {
+          randnum = Math.floor(Math.random() * 48 + 1);
+        }
+
+        nums.push(randnum);
+      }
+
+      var arrstring = "";
+
+      for (i = 0; i < 5; i++) {
+        arrstring = arrstring + nums[i] + " ";
+      }
+
+      document.getElementById("unsorted").innerHTML = arrstring;
+
+      nums.sort(function(a, b) {
+        return a - b;
+      });
+
+      var arrstring2 = "";
+
+      for (i = 0; i < 5; i++) {
+        arrstring2 = arrstring2 + nums[i] + " ";
+      }
+
+      document.getElementById("sorted").innerHTML = arrstring2;
+
+      var luckyball = Math.floor(Math.random() * 18 + 1);
+
+      document.getElementById("luckynum").innerHTML = luckyball;
+
+      function processInput() {
+
+        var luckynum = document.getElementById("luckyb").value;
+
+        var inputnumbers = document.getElementById("numbers").value;
+        var nummatches = 0;
+        var len = inputnumbers.length;
+
+        inputnumbers = inputnumbers.split(" ");
+
+
+        for (i = 0; i < inputnumbers.length; i++) {
+           var newnum = parseInt(inputnumbers[i]); 
+           inputnumbers[i] =  newnum;      
+         }
+
+
+
+        var nummatches = 0;
+
+        for (i = 0; i < 5; i++) {
+
+          if (nums.includes(inputnumbers[i], 0)) {
+            nummatches++;
+          }
+
+        }
+
+        showDiv(nummatches, luckynum);
+      }
+
+      function showDiv(nummatches, luckynum) {
+
+
+        document.getElementById("PayoutDiv").style.display = "block";
+
+        if ((nummatches == 5) && (luckynum == luckyball)) {
+          document.getElementById("PayoutDiv").innerHTML = "$7,000 a WEEK for LIFE!";
+        }
+
+        else if ((nummatches == 5) && (luckynum != luckyball)) {
+           document.getElementById("PayoutDiv").innerHTML = "$25,000 a YEAR for LIFE!";
+        }
+
+        else if ((nummatches == 4) && (luckynum == luckyball)) {
+           document.getElementById("PayoutDiv").innerHTML = "$5,000";
+        }
+
+        else if ((nummatches == 4) && (luckynum != luckyball)) {
+           document.getElementById("PayoutDiv").innerHTML = "$200";
+        }
+
+        else if ((nummatches == 3) && (luckynum == luckyball)) {
+           document.getElementById("PayoutDiv").innerHTML = "$150";
+        }
+
+        else if ((nummatches == 3) && (luckynum != luckyball)) {
+           document.getElementById("PayoutDiv").innerHTML = "$20";
+        }
+
+        else if ((nummatches == 2) && (luckynum == luckyball)) {
+           document.getElementById("PayoutDiv").innerHTML = "$25";
+        }
+
+        else if ((nummatches == 2) && (luckynum != luckyball)) {
+           document.getElementById("PayoutDiv").innerHTML = "$3";
+        }
+
+        else if ((nummatches == 1) && (luckynum == luckyball)) {
+           document.getElementById("PayoutDiv").innerHTML = "$6";
+        }
+
+        else if ((nummatches == 0) && (luckynum == luckyball)) {
+           document.getElementById("PayoutDiv").innerHTML = "$4";
+        }
+
+      }
+    </script>
+
+  </body>
+</html>
